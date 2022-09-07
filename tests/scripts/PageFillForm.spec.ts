@@ -2,7 +2,7 @@
 import { test, expect } from '@playwright/test';
 import { FillForm } from '../classes/classPageFillForm';
 
-test('fill all informations', async ({ page }) => {
+test('Fill Form', async ({ page }) => {
 
   const Page = new FillForm(page);
   
@@ -26,11 +26,11 @@ test('fill all informations', async ({ page }) => {
 
   await Page.company.fill('YDUQS EDUCACAO');
 
-  await Page.expectation.select(['Leader', 'Teamwork']);
+  await Page.expectation.select(['Salary', 'Challenge']);
 
-  await Page.development.select(['Books', 'TechCons']);
+  await Page.development.select(['Courses', 'OpenSource', 'TechBlogs', 'Discovery']);
 
-  await Page.comment.fill('DSDFSA');
+  await Page.comment.fill('Please, call me in the morning. I get out my house after 1pm');
 
   await Page.submit.click();
 
@@ -39,13 +39,7 @@ test('fill all informations', async ({ page }) => {
 
 });
 
-test.skip('should show Page Object Model article', async ({ page }) => {
-  /*
-  const playwrightDev = new PlaywrightDevPage(page);
-  await playwrightDev.goto();
-  await playwrightDev.pageObjectModel();
-  await expect(page.locator('article')).toContainText('Page Object Model is a common pattern');
-  */
-});
+
+
 
 

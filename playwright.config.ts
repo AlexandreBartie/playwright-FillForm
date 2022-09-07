@@ -35,7 +35,7 @@ const config: PlaywrightTestConfig = {
 
   use: {
     launchOptions: {
-      slowMo: 900,
+      slowMo: 100,
     },
     // Artifacts
     screenshot: 'on',

@@ -1,209 +1,48 @@
-// playwright-dev-page.ts
-import { expect, Locator, Page } from '@playwright/test';
+// example.spec.ts
+import { test, expect } from '@playwright/test';
+import { FillForm } from '../classes/classPageFillForm';
 
-export class FillForm
-{
-  readonly page: Page;
+test('Fill Form', async ({ page }) => {
+
+  const Page = new FillForm(page);
   
-  readonly firstName: Locator;
-  readonly lastName: Locator;
-  readonly gender: Gender;
-  readonly dob: Locator;
+  await Page.View();
 
-  readonly address: Locator;
-  readonly email: Locator;
-  readonly password: Locator;
+  await Page.firstName.fill('ALEXANDRE');
 
-  readonly company: Locator;
-  readonly role: Locator;
+  await Page.lastName.fill('BARTIE');
 
-  readonly expectation: JobExpectation;
-  readonly development: WaysDevelopment;
-  
-  readonly comment: Locator;
+  await Page.gender.select('Male');
 
-  readonly submit: Locator;
-  readonly message: Locator;
+  await Page.dob.press(String.fromCharCode(13));
 
-  constructor(page: Page)
-  {
+  await Page.dob.fill('06-05-1971');
 
-    this.page = page;
+  await Page.address.fill('R. Purus, 165, Centro, Diadema, SP, Brazil');
 
-    this.gender = new Gender(page);
-    this.expectation = new JobExpectation(page);
-    this.development = new WaysDevelopment(page);
+  await Page.email.fill('bartie.devops@outlook.com');
 
-    this.firstName = page.locator('input[name="firstName"]');
-    this.lastName = page.locator('input[name="lastName"]');
+  await Page.password.fill('devops2022');
 
-    this.dob = page.locator('input[name="dob"]');
+  await Page.company.fill('YDUQS EDUCACAO');
 
-    this.address = page.locator('input[name="address"]');
-    this.email = page.locator('input[name="email"]');
-    this.password = page.locator('input[name="password"]');
+  await Page.expectation.select(['Leader', 'Teamwork', 'Salary', 'OnSite', 'Challenge', 'Colleagues']);
 
-    this.company = page.locator('input[name="company"]');  
-    this.role = page.locator('input[name="role"]');
+  await Page.development.select(['Courses', 'TechCons', 'Books', 'OpenSource', 'TechBlogs', 'Discovery']);
 
-    this.comment = page.locator('textarea[name="comment"]');
+  await Page.comment.fill('Please, call me in the morning. I get out my house after 1pm');
 
-    this.submit = page.locator('button:has-text("Submit")');
-    this.message = page.locator('text=Successfully submitted!');
+  await Page.submit.click();
 
-  }
+  CheckFillForm(Page);
 
-  async View() 
-  {
-    await this.page.goto('https://katalon-test.s3.amazonaws.com/aut/html/form.html');
-    
-    await expect(this.page).toHaveTitle(/Demo AUT/);
-  }  
+});
 
-}
-
-class Gender
+async function CheckFillForm (Page : FillForm)
 {
 
-  readonly page: Page;
-
-  constructor(page: Page)
-  {
-    this.page = page;
-  }
-
-  async select(gender: string)
-  {
- 
-    switch (gender)
-    {
-      case 'Male':
-        await this.page.locator('text=Male >> nth=0').check();
-        break;
-
-      case 'Female':
-        await this.page.locator('text=Female >> input[name="gender"]').check();
-        break;
-
-      case 'Between':
-        await this.page.locator('text=In Between >> input[name="gender"]').check();
-        break;
-
-    }
-
-  }
+  await expect(this.Page.message).toBeVisible;
+  await expect(this.Page.message).toHaveText('Successfully submitted!');
 
 }
 
-class JobExpectation
-{
-  readonly page: Page;
-
-  constructor(page: Page)
-  {
-    this.page = page;
-  }
-
-  async select(list: string[])
-  {
-    this.page.selectOption('#expectation', list)
-  }
-
-  async select2(expectation: string)
-  {
- 
-    switch (expectation)
-    {
-      case 'Male':
-        await this.page.locator('text=Male >> nth=0').check();
-        break;
-
-      case 'Female':
-        await this.page.locator('text=Female >> input[name="gender"]').check();
-        break;
-
-      case 'Between':
-        await this.page.locator('text=In Between >> input[name="gender"]').check();
-        break;
-
-    }
-
-  }
-
-}
-
-class WaysDevelopment
-{
-  readonly page: Page;
-
-  constructor(page: Page)
-  {
-    this.page = page;
-  }
-
-  async select(list: string[])
-  {
-    this.page.selectOption('#expectation', list)
-  }
-}
-
-export class Options
-{
-  readonly list: Option[];
-
-  constructor(list: Option[])
-  {
-    this.list = list;
-  }
-
-  Get(tag: string): string
-  {
-    this.list.forEach(function (item : Option) 
-    {
-      if (item.IsMatch(tag))
-        return item.text;
-    }); 
-    return ''
-  }
-}
-
-export class Option
-{
-  readonly tag: string;
-  readonly text: string;
-
-  constructor(tag: string, text: string)
-  {
-    this.tag = tag;
-    this.text = text;
-  }
-
-  IsMatch(tag: string): boolean { return this.tag.includes(tag) }
-
-}
-
-
-
-/*
-Job expectation
-{
-High salary
-Challenging
-Nice manager/leader
-Excellent colleagues
-Good teamwork
-Chance to go onsite
-}
-
-Ways of development
-{
-Read books
-Take online courses
-Contribute to opensource projects
-Join tech cons
-Read tech blogs
-Via discovery and experiment
-}
-*/
-
-  

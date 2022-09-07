@@ -105,41 +105,54 @@ class JobExpectation
 
   async select(list: string[])
   {
-    list.forEach(option => { this.click(option) } );
+    
+    var locator = this.page.locator('select[name="expectation"]');
+
+    var options = this.getOptions(list);
+
+    locator.selectOption(options);
+
   }
 
-  async click(expectation: string)
+  private getOptions(list: string[]) : string[]
   {
     
-    var locator = this.page.locator('select[name="expectation"]')
+    var ret : string[] = [];
+    
+    for (var item of list)
+    { 
 
-    switch (expectation.toLowerCase())
-    {
-      case 'salary':
-        await locator.selectOption('High salary');
-        break;
+      switch (item.toLowerCase())
+      {
+        case 'salary':
+          ret.push('High salary');
+          break;
 
-      case 'leader':
-        await locator.selectOption('Nice manager/leader');
-        break;
+        case 'leader':
+          ret.push('Nice manager/leader');
+          break;
 
-      case 'colleagues':
-        await locator.selectOption('Excellent colleagues');
-        break;
+        case 'colleagues':
+          ret.push('Excellent colleagues');
+          break;
 
-      case 'teamwork':
-        await locator.selectOption('Good teamwork');
-        break;
+        case 'teamwork':
+          ret.push('Good teamwork');
+          break;
 
-      case 'onsite':
-        await locator.selectOption('Challenging');
-        break;
+        case 'onsite':
+          ret.push('Chance to go onsite');
+          break;
 
-      case 'challenge':
-        await locator.selectOption('Challenging');
-        break;
+        case 'challenge':
+          ret.push('Challenging');
+          break;
+
+      }
 
     }
+    
+    return ret;
 
   }
 
@@ -156,7 +169,8 @@ class WaysDevelopment
 
   async select(list: string[])
   {
-    list.forEach(option => { this.click(option) } );
+    for (var item of list)
+      await this.click(item);
   }
 
   async click(expectation: string)
@@ -179,7 +193,7 @@ class WaysDevelopment
         break;
 
       case 'techcons':
-        tag = 'Contribute to opensource projects';
+        tag = 'Join tech cons';
         break;
 
       case 'techblogs':
@@ -191,9 +205,10 @@ class WaysDevelopment
         break;
 
     }
-
-    await this.page.locator('text=' + tag + ' >> input[type="checkbox"]').check();
-
+    
+    var selector = 'text=' + tag + ' >> input[type="checkbox"]';
+    
+    await this.page.locator(selector).check();
   }
 
 }
