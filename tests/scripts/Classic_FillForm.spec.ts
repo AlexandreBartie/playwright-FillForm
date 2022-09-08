@@ -1,8 +1,8 @@
 // example.spec.ts
 import { test, expect } from '@playwright/test';
-import { FillForm } from '../classes/classPageFillForm';
+import { FillForm } from '../classes/Classic_PageFillForm';
 
-test('Fill Form', async ({ page }) => {
+test('Fill Form using Page Objects', async ({ page }) => {
 
   const Page = new FillForm(page);
   
@@ -26,23 +26,20 @@ test('Fill Form', async ({ page }) => {
 
   await Page.company.fill('YDUQS EDUCACAO');
 
-  await Page.expectation.select(['Leader', 'Teamwork', 'Salary', 'OnSite', 'Challenge', 'Colleagues']);
+  await Page.expectation.select(['Salary', 'Teamwork']);
 
-  await Page.development.select(['Courses', 'TechCons', 'Books', 'OpenSource', 'TechBlogs', 'Discovery']);
+  await Page.development.select(['Courses', 'OpenSource', 'TechBlogs', 'Discovery']);
 
   await Page.comment.fill('Please, call me in the morning. I get out my house after 1pm');
 
   await Page.submit.click();
 
-  CheckFillForm(Page);
+  await expect(Page.message).toBeVisible;
+  await expect(Page.message).toHaveText('Successfully submitted!');
 
 });
 
-async function CheckFillForm (Page : FillForm)
-{
 
-  await expect(this.Page.message).toBeVisible;
-  await expect(this.Page.message).toHaveText('Successfully submitted!');
 
-}
+
 

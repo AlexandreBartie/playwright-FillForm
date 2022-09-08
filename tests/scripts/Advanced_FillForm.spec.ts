@@ -1,11 +1,20 @@
 // example.spec.ts
 import { test, expect } from '@playwright/test';
-import { FillForm } from '../classes/classPageFillForm';
+import { FillForm } from '../classes/Classic_PageFillForm';
 
-test('Fill Form', async ({ page }) => {
+test('Fill Form using Page Framework', async ({ page }) => {
 
   const Page = new FillForm(page);
   
+  await ActFillForm(Page);
+
+  await AssertFillForm(Page);
+
+});
+
+async function ActFillForm (Page : FillForm)
+{
+
   await Page.View();
 
   await Page.firstName.fill('ALEXANDRE');
@@ -26,7 +35,7 @@ test('Fill Form', async ({ page }) => {
 
   await Page.company.fill('YDUQS EDUCACAO');
 
-  await Page.expectation.select(['Salary', 'Challenge']);
+  await Page.expectation.select(['Salary', 'Teamwork']);
 
   await Page.development.select(['Courses', 'OpenSource', 'TechBlogs', 'Discovery']);
 
@@ -34,12 +43,13 @@ test('Fill Form', async ({ page }) => {
 
   await Page.submit.click();
 
+}
+
+
+async function AssertFillForm (Page : FillForm)
+{
+
   await expect(Page.message).toBeVisible;
   await expect(Page.message).toHaveText('Successfully submitted!');
 
-});
-
-
-
-
-
+}

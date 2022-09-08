@@ -27,6 +27,9 @@ test('homepage has Playwright in title and get started link linking to the intro
 
   // Select input[name="dob"]
   await page.locator('input[name="dob"]').click()
+
+   // Select input[name="dob"]
+   await page.locator('input[name="address"]').click()
   
   // Fill input[name="dob"]
   await page.locator('input[name="dob"]').fill('06-05-1971');

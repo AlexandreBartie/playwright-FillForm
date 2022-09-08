@@ -247,17 +247,3 @@ export class Option
   IsMatch(tag: string): boolean { return this.tag.includes(tag) }
 
 }
-
-
-
-/*
-Job expectation
-{
-
-}
-
-Ways of development
-{
-
-}
-*/
